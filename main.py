@@ -2,10 +2,6 @@ import streamlit as st
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, classification_report
-import numpy as np
-
 # Set page config
 st.set_page_config(page_title="Disease Prediction System", page_icon="🩺", layout="wide")
 
@@ -191,3 +187,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
