@@ -13,7 +13,7 @@ st.set_page_config(page_title="Disease Prediction System", page_icon="🩺", lay
 @st.cache_data
 def load_and_preprocess_data():
     # Load dataset
-    df = pd.read_csv(r"C:\Users\rishi\Downloads\waterborne_diseases_dataset (1).csv")
+    df = pd.read_csv(r"waterborne_diseases_dataset (1).csv")
     
     # Check for data imbalance
     class_counts = df["prognosis"].value_counts()
@@ -189,4 +189,5 @@ def main():
         st.error(f"❌ An error occurred: {str(e)}")
 
 if __name__ == "__main__":
+
     main()
