@@ -118,6 +118,12 @@ def main():
                 input_df = pd.DataFrame([symptom_inputs]).reindex(
                     columns=original_columns, fill_value=0
                 )
+                feature_importance = model.feature_importances_
+                selected_importance = {
+                    sym: feature_importance[list(original_columns).index(sym)]
+                    for sym, val in symptom_inputs.items()
+                    if val
+                }
                 # Get probabilities
                 probs = model.predict_proba(input_df)[0]
         
@@ -188,6 +194,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
