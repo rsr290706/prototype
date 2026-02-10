@@ -113,43 +113,37 @@ def main():
         if st.button("🔬 Predict Disease", type="primary", use_container_width=True):
             if not any(symptom_inputs.values()):
                 st.warning("⚠️ Please select at least one symptom before predicting.")
-                return
-            
-            # Convert to dataframe with same structure (using original column order for model)
-            original_columns = df.drop(columns=["prognosis"]).columns
-            input_df = pd.DataFrame([symptom_inputs]).reindex(columns=original_columns, fill_value=0)
-            
-            # Get probabilities
-            probs = model.predict_proba(input_df)[0]
-            
-            # Get feature importance for selected symptoms
-            feature_importance = model.feature_importances_
-            selected_importance = {sym: feature_importance[list(original_columns).index(sym)] 
-                                 for sym in selected_symptoms}
-            
-            # Show results
-            results = [(disease, p) for disease, p in zip(model.classes_, probs) if p > threshold]
-            
-           if results:
-                st.success(f"🎯 **Diseases with probability ≥ {threshold:.0%}:**")
-            
-                # Sort by probability (highest first)
-                results.sort(key=lambda x: x[1], reverse=True)
-            
-                for i, (disease, prob) in enumerate(results, start=1):
-                    risk = "🔴 High" if prob > 0.7 else "🟡 Medium" if prob > 0.4 else "🟢 Low"
-            
-                    with st.expander(f"{i}. {disease} — {prob:.2%} ({risk})", expanded=(i == 1)):
-                        st.markdown(f"### 🦠 Predicted Disease: **{disease}**")
-                        st.write(f"**Confidence:** {prob:.2%}")
-                        st.progress(prob)
-            
-                        if prob > 0.7:
-                            st.error("⚠️ High probability detected. Please consult a healthcare professional immediately.")
-                        elif prob > 0.4:
-                            st.warning("⚠️ Moderate probability. Consider consulting a healthcare professional.")
-                        else:
-                            st.info("ℹ️ Low probability. Monitor symptoms and consult if they persist.")
+            else:
+                # Get probabilities
+                probs = model.predict_proba(input_df)[0]
+        
+                results = [
+                    (disease, p)
+                    for disease, p in zip(model.classes_, probs)
+                    if p >= threshold
+                ]
+        
+                if results:
+                    st.success(f"🎯 **Diseases with probability ≥ {threshold:.0%}:**")
+        
+                    results.sort(key=lambda x: x[1], reverse=True)
+        
+                    for i, (disease, prob) in enumerate(results, start=1):
+                        risk = "🔴 High" if prob > 0.7 else "🟡 Medium" if prob > 0.4 else "🟢 Low"
+        
+                        with st.expander(f"{i}. {disease} — {prob:.2%} ({risk})", expanded=(i == 1)):
+                            st.markdown(f"### 🦠 Predicted Disease: **{disease}**")
+                            st.write(f"**Confidence:** {prob:.2%}")
+                            st.progress(prob)
+        
+                            if prob > 0.7:
+                                st.error("⚠️ High probability detected. Please consult a healthcare professional immediately.")
+                            elif prob > 0.4:
+                                st.warning("⚠️ Moderate probability. Consider consulting a healthcare professional.")
+                            else:
+                                st.info("ℹ️ Low probability. Monitor symptoms and consult if they persist.")
+        else:
+            st.info(f"ℹ️ No disease detected with probability ≥ {threshold:.0%}.")
                 if selected_importance:
                     st.subheader("📊 Symptom Relevance")
                     importance_df = pd.DataFrame(
@@ -188,6 +182,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
