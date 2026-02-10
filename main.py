@@ -135,8 +135,13 @@ def main():
                     for i, (disease, prob) in enumerate(results, start=1):
                         risk = "🔴 High" if prob > 0.7 else "🟡 Medium" if prob > 0.4 else "🟢 Low"
         
-                        with st.expander(f"{i}. {disease} — {prob:.2%} ({risk})", expanded=(i == 1)):
-                            st.markdown(f"### 🦠 Predicted Disease: **{disease}**")
+                        with st.expander(
+                            f"🦠 Predicted Disease: {disease} — {prob:.2%} ({risk})",
+                            expanded=(i == 1)
+                        ):
+                            st.write(f"**Confidence:** {prob:.2%}")
+                            st.progress(prob)
+
                             st.write(f"**Confidence:** {prob:.2%}")
                             st.progress(prob)
         
@@ -186,6 +191,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
