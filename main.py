@@ -17,7 +17,7 @@ def load_and_preprocess_data():
     return df, class_counts
 
 # --- Model Training ---
-@st.cache_data
+@st.cache_resource
 def train_model(df):
     # Features and target
     X = df.drop(columns=["prognosis"])
@@ -187,4 +187,5 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
