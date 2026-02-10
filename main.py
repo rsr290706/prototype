@@ -114,6 +114,10 @@ def main():
             if not any(symptom_inputs.values()):
                 st.warning("⚠️ Please select at least one symptom before predicting.")
             else:
+                original_columns = df.drop(columns=["prognosis"]).columns
+                input_df = pd.DataFrame([symptom_inputs]).reindex(
+                    columns=original_columns, fill_value=0
+                )
                 # Get probabilities
                 probs = model.predict_proba(input_df)[0]
         
@@ -182,6 +186,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
