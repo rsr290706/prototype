@@ -17,8 +17,8 @@ def load_and_preprocess_data():
     return df, class_counts
 
 # --- Model Training ---
-@st.cache_resource
-def train_model(df):
+@st.cache_data
+def train_model(_df):
     # Features and target
     X = df.drop(columns=["prognosis"])
     all_symptoms = list(X.columns)
