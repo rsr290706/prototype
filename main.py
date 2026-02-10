@@ -20,32 +20,37 @@ def load_and_preprocess_data():
 @st.cache_data
 def train_model(_df):
     # Features and target
-    X = df.drop(columns=["prognosis"])
+    X = _df.drop(columns=["prognosis"])
     all_symptoms = list(X.columns)
     symptoms_ascending = sorted(all_symptoms)
-    y = df["prognosis"]
-    
-    # Train-test split with stratification to maintain class distribution
+    y = _df["prognosis"]
+
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
     )
-    
-    # Train Random Forest with balanced class weights
+
     model = RandomForestClassifier(
-        n_estimators=500, 
+        n_estimators=500,
         random_state=42,
-        class_weight='balanced',  # This helps with imbalanced data
-        max_depth=10,  # Prevent overfitting
+        class_weight="balanced",
+        max_depth=10,
         min_samples_split=5,
         min_samples_leaf=2
     )
+
     model.fit(X_train, y_train)
-    
-    # Get model performance
+
     train_accuracy = model.score(X_train, y_train)
     test_accuracy = model.score(X_test, y_test)
-    
-    return model, symptoms_ascending, train_accuracy, test_accuracy, y_test, model.predict(X_test)
+
+    return (
+        model,
+        symptoms_ascending,
+        train_accuracy,
+        test_accuracy,
+        y_test,
+        model.predict(X_test),
+    )
 
 # --- Main App ---
 def main():
@@ -187,5 +192,6 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
