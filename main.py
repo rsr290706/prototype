@@ -130,32 +130,26 @@ def main():
             # Show results
             results = [(disease, p) for disease, p in zip(model.classes_, probs) if p > threshold]
             
-            if results:
-                st.success(f"🎯 **Diseases with probability > {threshold}:**")
-                
-                # Sort by probability
+           if results:
+                st.success(f"🎯 **Diseases with probability ≥ {threshold:.0%}:**")
+            
+                # Sort by probability (highest first)
                 results.sort(key=lambda x: x[1], reverse=True)
-                
-                for i, (disease, prob) in enumerate(results):
-                    confidence_level = "🔴 High" if prob > 0.7 else "🟡 Medium" if prob > 0.4 else "🟢 Low"
-                    
-                    with st.expander(f"{i+1}. Prediction"):
-                        st.subheader(f"🦠 Predicted Disease: **{disease}**")
+            
+                for i, (disease, prob) in enumerate(results, start=1):
+                    risk = "🔴 High" if prob > 0.7 else "🟡 Medium" if prob > 0.4 else "🟢 Low"
+            
+                    with st.expander(f"{i}. {disease} — {prob:.2%} ({risk})", expanded=(i == 1)):
+                        st.markdown(f"### 🦠 Predicted Disease: **{disease}**")
                         st.write(f"**Confidence:** {prob:.2%}")
-
-                        
-                        # Show progress bar
                         st.progress(prob)
-                        
-                        # Recommendation based on probability
+            
                         if prob > 0.7:
-                            st.error("⚠️ **High probability detected.** Please consult a healthcare professional immediately.")
+                            st.error("⚠️ High probability detected. Please consult a healthcare professional immediately.")
                         elif prob > 0.4:
-                            st.warning("⚠️ **Moderate probability.** Consider consulting a healthcare professional.")
+                            st.warning("⚠️ Moderate probability. Consider consulting a healthcare professional.")
                         else:
-                            st.info("ℹ️ **Low probability.** Monitor symptoms and consult if they persist.")
-                
-                # Show symptom importance for prediction
+                            st.info("ℹ️ Low probability. Monitor symptoms and consult if they persist.")
                 if selected_importance:
                     st.subheader("📊 Symptom Relevance")
                     importance_df = pd.DataFrame(
@@ -194,6 +188,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
