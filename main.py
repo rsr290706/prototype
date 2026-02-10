@@ -141,9 +141,6 @@ def main():
                         ):
                             st.write(f"**Confidence:** {prob:.2%}")
                             st.progress(prob)
-
-                            st.write(f"**Confidence:** {prob:.2%}")
-                            st.progress(prob)
         
                             if prob > 0.7:
                                 st.error("⚠️ High probability detected. Please consult a healthcare professional immediately.")
@@ -191,6 +188,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
