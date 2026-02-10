@@ -135,42 +135,47 @@ def main():
         
                 if results:
                     st.success(f"🎯 **Diseases with probability ≥ {threshold:.0%}:**")
-        
+                
                     results.sort(key=lambda x: x[1], reverse=True)
-        
+                
                     for i, (disease, prob) in enumerate(results, start=1):
-                        risk = "🔴 High" if prob > 0.7 else "🟡 Medium" if prob > 0.4 else "🟢 Low"
-        
+                        risk = (
+                            "🔴 High" if prob > 0.7
+                            else "🟡 Medium" if prob > 0.4
+                            else "🟢 Low"
+                        )
+                
                         with st.expander(
                             f"🦠 Predicted Disease: {disease} — {prob:.2%} ({risk})",
                             expanded=(i == 1)
                         ):
                             st.write(f"**Confidence:** {prob:.2%}")
                             st.progress(prob)
-        
+                
                             if prob > 0.7:
                                 st.error("⚠️ High probability detected. Please consult a healthcare professional immediately.")
                             elif prob > 0.4:
                                 st.warning("⚠️ Moderate probability. Consider consulting a healthcare professional.")
                             else:
                                 st.info("ℹ️ Low probability. Monitor symptoms and consult if they persist.")
+                
+                    # ✅ Symptom relevance belongs here
                     if selected_importance:
                         st.subheader("📊 Symptom Relevance")
-                                    importance_df = pd.DataFrame(
-                                        list(selected_importance.items()), 
-                                        columns=['Symptom', 'Importance']
-                                    ).sort_values('Importance', ascending=False)
-                                        
-                                    for _, row in importance_df.iterrows():
-                                        st.write(f"- {row['Symptom'].replace('_', ' ').title()}: {row['Importance']:.3f}")            
+                
+                        importance_df = pd.DataFrame(
+                            list(selected_importance.items()),
+                            columns=["Symptom", "Importance"]
+                        ).sort_values("Importance", ascending=False)
+                
+                        for _, row in importance_df.iterrows():
+                            st.write(
+                                f"- {row['Symptom'].replace('_', ' ').title()}: {row['Importance']:.3f}"
+                            )
+                
                 else:
-                                st.info(f"ℹ️ No disease detected with probability ≥ {threshold:.0%}.")
-                                            
-        else:
-            st.info(f"ℹ️ No disease detected with probability > {threshold:.1%}. Try:")
-            st.write("- Adjusting the threshold in the sidebar")
-            st.write("- Selecting additional symptoms")
-            st.write("- Consulting a healthcare professional if symptoms persist")
+                    st.info(f"ℹ️ No disease detected with probability ≥ {threshold:.0%}.")
+
                             
         # Additional insights
         with st.expander("🔍 View Dataset Insights"):
@@ -197,6 +202,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
