@@ -184,7 +184,10 @@ def main():
             st.text_area("Complete Symptom List:", symptoms_text, height=100)
             
             st.write("**Top 5 Most Common Diseases:**")
-            st.bar_chart(class_counts.head(5))
+            st.bar_chart(pd.DataFrame({
+                "count": class_counts.head(5).values
+            }, index=class_counts.head(5).index.astype(str)))
+
     
     except FileNotFoundError:
         st.error("❌ Dataset file not found. Please check the file path.")
@@ -194,6 +197,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
