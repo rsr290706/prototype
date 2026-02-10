@@ -139,8 +139,10 @@ def main():
                 for i, (disease, prob) in enumerate(results):
                     confidence_level = "🔴 High" if prob > 0.7 else "🟡 Medium" if prob > 0.4 else "🟢 Low"
                     
-                    with st.expander(f"{i+1}. {disease} - {prob:.2%} {confidence_level}"):
+                    with st.expander(f"{i+1}. Prediction"):
+                        st.subheader(f"🦠 Predicted Disease: **{disease}**")
                         st.write(f"**Confidence:** {prob:.2%}")
+
                         
                         # Show progress bar
                         st.progress(prob)
@@ -192,6 +194,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
