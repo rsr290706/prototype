@@ -154,24 +154,24 @@ def main():
                                 st.warning("⚠️ Moderate probability. Consider consulting a healthcare professional.")
                             else:
                                 st.info("ℹ️ Low probability. Monitor symptoms and consult if they persist.")
-                     if selected_importance:
-                                    st.subheader("📊 Symptom Relevance")
+                    if selected_importance:
+                        st.subheader("📊 Symptom Relevance")
                                     importance_df = pd.DataFrame(
                                         list(selected_importance.items()), 
                                         columns=['Symptom', 'Importance']
                                     ).sort_values('Importance', ascending=False)
                                         
                                     for _, row in importance_df.iterrows():
-                                        st.write(f"- {row['Symptom'].replace('_', ' ').title()}: {row['Importance']:.3f}")
+                                        st.write(f"- {row['Symptom'].replace('_', ' ').title()}: {row['Importance']:.3f}")            
                 else:
                                 st.info(f"ℹ️ No disease detected with probability ≥ {threshold:.0%}.")
                                             
-                else:
-                        st.info(f"ℹ️ No disease detected with probability > {threshold:.1%}. Try:")
-                        st.write("- Adjusting the threshold in the sidebar")
-                        st.write("- Selecting additional symptoms")
-                        st.write("- Consulting a healthcare professional if symptoms persist")
-                
+        else:
+            st.info(f"ℹ️ No disease detected with probability > {threshold:.1%}. Try:")
+            st.write("- Adjusting the threshold in the sidebar")
+            st.write("- Selecting additional symptoms")
+            st.write("- Consulting a healthcare professional if symptoms persist")
+                            
         # Additional insights
         with st.expander("🔍 View Dataset Insights"):
             st.write("**Dataset Overview:**")
@@ -197,6 +197,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
